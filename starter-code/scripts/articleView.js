@@ -42,7 +42,7 @@ articleView.handleAuthorFilter = function() {
       //       and then show just the ones that match for the author that was selected.
       var $authorName = $(this).val();
       //       Use an "attribute selector" to find those articles, and fade them in for the reader.
-      $('article[data-author="'+ $authorName + '"]').show();
+      $('article[data-author="' + $authorName + '"]').show();
     } else {
       // TODO: (DONE)If the select box was changed to an option that is blank, we should
       //       show all the articles, except the one article we are using as a template.
@@ -56,37 +56,47 @@ articleView.handleAuthorFilter = function() {
 articleView.handleCategoryFilter = function() {
   // TODO: (DONE) Just like we do for #author-filter above, we should handle change events on the #category-filter element.//
   $('#category-filter').on('change', function() {
-  //       When an option with a value is selected, hide all the articles, //
+    //       When an option with a value is selected, hide all the articles, //
     if ($(this).val()) {
       $('article').hide();
       var $categoryName = $(this).val();
-        //       then reveal the matches.//
-      $('article[data-category="'+ $categoryName + '"]').show();
+      //       then reveal the matches.//
+      $('article[data-category="' + $categoryName + '"]').show();
     } else {
-  //       When the blank (default) option is selected, show all the articles, except for the template.//
+      //       When the blank (default) option is selected, show all the articles, except for the template.//
       $('article').show();
       $('article.template').hide();
     }
     $('#author-filter').val('');
-  //       Be sure to reset the #author-filter while you are at it!//
+    //       Be sure to reset the #author-filter while you are at it!//
   });
 };
 
 articleView.handleMainNav = function() {
-  // TODO: Add an event handler to .main-nav elements that will power the Tabs feature.
-  //       Clicking any .tab element should hide all the .tab-content sections, and then reveal the
-  //       single .tab-content section that is associated with the clicked .tab element.
-  //       So: You need to dynamically build a selector string with the correct ID, based on the
-  //       data available to you on the .tab element that was clicked.
+  // TODO: (DONE) Add an event handler to .main-nav elements that will power the Tabs feature.
+  $('.tab').on('click', function() {
+    //       Clicking any .tab element should hide all the .tab-content sections,
+    var $whereToGo = $(this).data('content');
+    $('.tab-content').hide();
+    $('#' + $whereToGo).show();
 
+    // and then reveal the
+    //       single .tab-content section that is associated with the clicked .tab element.
+    //       So: You need to dynamically build a selector string with the correct ID, based on the
+    //       data available to you on the .tab element that was clicked.
+
+
+  });
 
   $('.main-nav .tab:first').click(); // Let's now trigger a click on the first .tab element, to set up the page.
 };
 
 articleView.setTeasers = function() {
   $('.article-body *:nth-of-type(n+2)').hide(); // Hide elements beyond the first 2 in any article body.
-
-  // TODO: Add an event handler to reveal all the hidden elements,
+  $('.read-on').on('click', function() {
+    $(this).parent().find('.article-body *:nth-of-type(n+2)').show();
+  });
+  // TODO: (DONE) Add an event handler to reveal all the hidden elements,
   //       when the .read-on link is clicked. You can go ahead and hide the
   //       "Read On" link once it has been clicked. Be sure to prevent the default link-click action!
   //       Ideally, we'd attach this as just 1 event handler on the #articles section, and let it
@@ -96,9 +106,11 @@ articleView.setTeasers = function() {
 
 };
 
-// TODO: Call all of the above functions, once we are sure the DOM is ready.
+// TODO: (DONE) Call all of the above functions, once we are sure the DOM is ready.
 $(document).ready(function() {
   articleView.populateFilters();
   articleView.handleAuthorFilter();
   articleView.handleCategoryFilter();
+  articleView.handleMainNav();
+  articleView.setTeasers();
 })
